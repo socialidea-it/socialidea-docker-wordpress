@@ -1,4 +1,5 @@
 ## Socialidea Docker for WordPress
+
 Includes:
 - [x] wordpress
 - [x] mysql
@@ -10,6 +11,7 @@ Includes:
 - [ ] SSL
  
 ### WP-CONFIG.PHP
+
 Customize costants inside docker-compose.yml
 
 ```yml
@@ -51,11 +53,13 @@ Customize costants inside docker-compose.yml
 ```
 
 ### WP-CLI
+
 ```shell
   docker-compose run --rm wpcli user list
 ```
 ---
 ### PHPMYADMIN
+
 URL: localhost:8080
 
 **Default credentials:**\
@@ -64,6 +68,7 @@ pass `mysql`
 
 ---
 ### MAILHOG
+
 ```php
 add_action( 'phpmailer_init', 'setup' );
 function setup( $phpmailer ) {
@@ -88,12 +93,15 @@ function log_mailer_errors( $wp_error ){
 ```
 ---
 ### COMPOSER
+
 ```shell
 docker-compose run --rm composer init --working-dir=twentytwentyone
 ```
 ---
 ### S3 STORAGE
+
 **Coming soon:** https://github.com/silinternational/docker-sync-with-s3
 ---
 ### SSL
+
 **Coming soon:** https://zactyh.medium.com/hosting-wordpress-in-docker-with-ssl-2020-fa9391881f3
