@@ -1,5 +1,5 @@
 ## Socialidea Docker for WordPress
-Includes:\
+Includes:
 - [x] wordpress
 - [x] mysql
 - [x] wp-cli
@@ -8,7 +8,7 @@ Includes:\
 - [x] composer
 - [ ] S3 storage [ coming soon ]
  
-### wp-config.php
+### WP-CONFIG.PHP
 Customize costants inside docker-compose.yml
 
 ```yml
@@ -49,20 +49,20 @@ Customize costants inside docker-compose.yml
     }
 ```
 
-### RUN wp-cli
+### WP-CLI
 ```shell
   docker-compose run --rm wpcli user list
 ```
 ---
-### Phpmyadmin
+### PHPMYADMIN
 URL: localhost:8080
 
-#### Default credentials:
+**Default credentials:**
 user `root`\
 pass `mysql`
 
 ---
-### Add mail to WP
+### MAILHOG
 ```php
 add_action( 'phpmailer_init', 'setup' );
 function setup( $phpmailer ) {
@@ -86,10 +86,10 @@ function log_mailer_errors( $wp_error ){
 }
 ```
 ---
-### RUN Composer
+### COMPOSER
 ```shell
 docker-compose run --rm composer init --working-dir=twentytwentyone
 ```
 ---
-### S3 storage
+### S3 STORAGE
 Next step: https://github.com/silinternational/docker-sync-with-s3
