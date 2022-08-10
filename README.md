@@ -57,7 +57,7 @@ Customize costants inside docker-compose.yml
 ### PHPMYADMIN
 URL: localhost:8080
 
-**Default credentials:**
+**Default credentials:**\
 user `root`\
 pass `mysql`
 
