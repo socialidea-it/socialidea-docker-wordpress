@@ -7,6 +7,7 @@ Includes:
 - [x] mailhog
 - [x] composer
 - [ ] S3 storage [ coming soon ]
+- [ ] SSL
  
 ### WP-CONFIG.PHP
 Customize costants inside docker-compose.yml
@@ -92,4 +93,7 @@ docker-compose run --rm composer init --working-dir=twentytwentyone
 ```
 ---
 ### S3 STORAGE
-Next step: https://github.com/silinternational/docker-sync-with-s3
+**Coming soon:** https://github.com/silinternational/docker-sync-with-s3
+---
+### SSL
+**Coming soon:** https://zactyh.medium.com/hosting-wordpress-in-docker-with-ssl-2020-fa9391881f3
