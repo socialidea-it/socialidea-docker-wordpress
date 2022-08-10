@@ -3,18 +3,52 @@ version: '3'
 services:
   wp:
     image: wordpress:latest
-    container_name: ${DB_NAME}_wp
+    container_name: ${PROJECT}_wp
     ports:
       - ${IP}:80:80
     volumes:
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
-      - ./wp-app:/var/www/html
+      - ./wp-themes:/var/www/html/wp-content/themes
+      - ./wp-plugins:/var/www/html/wp-content/plugins
+      - ./wp-uploads:/var/www/html/wp-content/uploads
+      # - ./wp-app:/var/www/html
       - ./logs:/var/log/apache2
     environment:
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: "${DB_NAME}"
+      WORDPRESS_DB_NAME: "${PROJECT}"
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: "${DB_ROOT_PASSWORD}"
+
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_AUTH_KEY: 5f6ede1b94d25a2294e29eeba929a8c80a5ac0fb
+      WORDPRESS_SECURE_KEY: 5f6ede1b94d25a2294e29eeba929a8c80a5ac0fb
+      WORDPRESS_LOGGED_IN_KEY: 5f6ede1b94d25a2294e29eeba929a8c80a5ac0fb
+      WORDPRESS_NONCE_KEY: 5f6ede1b94d25a2294e29eeba929a8c80a5ac0fb
+      WORDPRESS_SECURE_AUTH_SALT: 5f6ede1b94d25a2294e29eeba929a8c80a5ac0fb
+      WORDPRESS_LOGGED_IN_SALT: 5f6ede1b94d25a2294e29eeba929a8c80a5ac0fb
+      WORDPRESS_NONCE_SALT: 5f6ede1b94d25a2294e29eeba929a8c80a5ac0fb
+
+      # our local dev environment
+      WORDPRESS_CONFIG_EXTRA: |
+
+        /* development parameters */
+        define('WP_CACHE', false);
+        define('ENVIRONMENT', 'local');
+
+        /* configure mail server */
+        define('WORDPRESS_SMTP_AUTH', false);
+        define('WORDPRESS_SMTP_SECURE', '');
+        define('WORDPRESS_SMTP_HOST', 'mailhog');
+        define('WORDPRESS_SMTP_PORT', '1025');
+        define('WORDPRESS_SMTP_USERNAME', null);
+        define('WORDPRESS_SMTP_PASSWORD', null);
+        define('WORDPRESS_SMTP_FROM', 'no-reply@wordpress.org');
+        define('WORDPRESS_SMTP_FROM_NAME', 'Wordpres Site');
+
+        if(!defined('WP_HOME')) {
+          define('WP_HOME', 'http://localhost');
+          define('WP_SITEURL', WP_HOME);
+        }
     depends_on:
       - db
     links:
@@ -22,7 +56,7 @@ services:
 
   db:
     image: mysql:latest
-    container_name: ${DB_NAME}_db
+    container_name: ${PROJECT}_db
     ports:
       - 3306:3306
     command: [
@@ -33,8 +67,53 @@ services:
     volumes:
       - ./db_data:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_DATABASE: "${PROJECT}"
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+
+  wpcli:
+    depends_on: 
+      - db
+      - wp
+    image: wordpress:cli
+    links:
+      - db
+    entrypoint: wp
+    command: "--info"
+    container_name: ${PROJECT}_wpcli
+    volumes:
+      - ./wp-themes:/var/www/html/wp-content/themes
+    working_dir: /var/www/html
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: "${PROJECT}"
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: "${DB_ROOT_PASSWORD}"
+
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    container_name: ${PROJECT}_phpmyadmin
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+
+  mailhog:
+     image: mailhog/mailhog
+     ports: 
+       - 1025:1025 # smtp server
+       - 8025:8025 # web ui
+
+  composer:
+    image: composer:latest
+    container_name: ${PROJECT}_composer
+    volumes:
+      - ./wp-themes:/var/www/html/wp-content/themes:rw
+    working_dir: /var/www/html/wp-content/themes
 
 volumes:
   db_data:
+  wp-app:
