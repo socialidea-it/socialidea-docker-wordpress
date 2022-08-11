@@ -95,7 +95,7 @@ function log_mailer_errors( $wp_error ){
 ### COMPOSER
 
 ```shell
-docker-compose run --rm composer init --working-dir=twentytwentyone
+docker-compose run --rm composer init
 ```
 ---
 ### S3 STORAGE

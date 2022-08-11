@@ -2,17 +2,13 @@ version: '3'
 
 services:
   wp:
-    image: wordpress:latest
+    image: wordpress:php7.4-fpm-alpine
     container_name: ${PROJECT}_wp
     ports:
-      - ${IP}:80:80
+        - '9000:9000'
     volumes:
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
-      - ./wp-themes:/var/www/html/wp-content/themes
-      - ./wp-plugins:/var/www/html/wp-content/plugins
-      - ./wp-uploads:/var/www/html/wp-content/uploads
-      # - ./wp-app:/var/www/html
-      - ./logs:/var/log/apache2
+      - ./wp-app:/var/www/html/
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: "${PROJECT}"
@@ -53,7 +49,18 @@ services:
       - db
     links:
       - db
-
+    restart: always
+  nginx:
+    image: nginx:1.23.1-alpine
+    ports:
+        - '80:80'
+    volumes:
+        - ./default.conf:/etc/nginx/conf.d/default.conf:rw
+        - ./logs/nginx:/var/log/nginx:rw
+        - ./wp-app:/var/www/html:rw
+    links:
+        - wp
+    restart: always
   db:
     image: mysql:latest
     container_name: ${PROJECT}_db
@@ -81,7 +88,7 @@ services:
     command: "--info"
     container_name: ${PROJECT}_wpcli
     volumes:
-      - ./wp-themes:/var/www/html/wp-content/themes
+      - ./wp-app:/var/www/html
     working_dir: /var/www/html
     environment:
       WORDPRESS_DB_HOST: db
@@ -111,8 +118,8 @@ services:
     image: composer:latest
     container_name: ${PROJECT}_composer
     volumes:
-      - ./wp-themes:/var/www/html/wp-content/themes:rw
-    working_dir: /var/www/html/wp-content/themes
+      - ./wp-app:/var/www/html
+    working_dir: /var/www/html/wp-content/themes/${THEME}
 
 volumes:
   db_data:
