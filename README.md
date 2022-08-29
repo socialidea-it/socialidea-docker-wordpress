@@ -97,8 +97,10 @@ function log_mailer_errors( $wp_error ){
 ```shell
 docker-compose run --rm composer init
 ```
+
 ---
-### S3 STORAGE
+
+### S3 STORAGE 
 
 **Coming soon:** https://github.com/silinternational/docker-sync-with-s3
 ---
