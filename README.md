@@ -68,7 +68,7 @@ pass `mysql`
 
 ---
 ### MAILHOG
-
+URL: localhost:8025
 ```php
 add_action( 'phpmailer_init', 'setup' );
 function setup( $phpmailer ) {
