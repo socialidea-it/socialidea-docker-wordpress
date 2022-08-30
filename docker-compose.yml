@@ -109,10 +109,13 @@ services:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
 
   mailhog:
-     image: mailhog/mailhog
-     ports: 
-       - 1025:1025 # smtp server
-       - 8025:8025 # web ui
+    image: mailhog/mailhog
+    ports: 
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
+    command: ["-storage=maildir", "-maildir-path=/maildir"]
+    volumes:
+      - ./mailhog:/maildir
 
   composer:
     image: composer:latest
