@@ -2,7 +2,7 @@ version: '3'
 
 services:
   wp:
-    image: socialideait/wordpress:latest
+    image: socialideait/wordpress:1.0
     container_name: ${PROJECT}_wp
     ports:
         - '9000:9000'
