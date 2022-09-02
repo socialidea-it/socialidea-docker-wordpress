@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+
   wp:
     image: socialideait/wordpress:1.0
     container_name: ${PROJECT}_wp
@@ -50,6 +51,7 @@ services:
     links:
       - db
     restart: always
+
   nginx:
     image: nginx:1.23.1-alpine
     ports:
@@ -61,6 +63,7 @@ services:
     links:
         - wp
     restart: always
+
   db:
     image: mysql:latest
     container_name: ${PROJECT}_db
