@@ -1,4 +1,5 @@
 ## Socialidea Docker for WordPress
+DockerHub: https://hub.docker.com/r/socialideait/wordpress
 
 Includes:
 - [x] wordpress
