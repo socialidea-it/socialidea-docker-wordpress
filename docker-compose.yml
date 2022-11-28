@@ -3,7 +3,7 @@ version: '3'
 services:
 
   wp:
-    image: socialideait/wordpress:1.0
+    image: wordpress:php5.6-fpm-alpine
     container_name: ${PROJECT}_wp
     ports:
         - '9000:9000'
