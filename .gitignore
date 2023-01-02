@@ -1,7 +1,6 @@
-db_data
+.github
 logs
+mailhog
 wp-app
-wp-themes
-wp-uploads
-wp-plugins
+wp-data
 .DS_Store

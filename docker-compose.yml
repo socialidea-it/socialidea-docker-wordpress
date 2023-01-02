@@ -9,6 +9,7 @@ services:
         - 80:80
     volumes:
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./logs:/var/log/apache2/
       - ./wp-app:/var/www/html/
     environment:
       WORDPRESS_DB_HOST: db
